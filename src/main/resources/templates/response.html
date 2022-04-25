@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Check Client Status Response</title>
+ <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="text-center">
+<h1>Service Response </h1>
+</div>
+
+<div class="container px-5 my-5">
+    <form id="contactForm" th:object="${response}" method="get" action="/check/client/status">
+        <div class="form-floating mb-3">
+            <input class="form-control" id="customerName" type="text" placeholder="Customer Name" data-sb-validations="required" readonly="readonly" th:field="*{isEligeble}" />
+            <label for="customerName">Is Eligible</label>
+            <div class="invalid-feedback" data-sb-feedback="customerName:required">Customer Name is required.</div>
+        </div>
+        <div class="form-floating mb-3" th:if="${response.isEligeble}">
+            <input class="form-control" id="age" type="number" placeholder="Age" min=18 data-sb-validations="required" readonly="readonly" th:field="*{approvedAmount}"/>
+            <label for="age">Approved Amount</label>
+            <div class="invalid-feedback" data-sb-feedback="age:required">Age is required.</div>
+        </div>
+        <div th:unless="${response.isEligeble}">
+            <label for="yearlyIncome">Criteria Mismatch</label>
+         
+            <ol>
+            <li th:each="criteria : ${response.criteriaMismatch}" th:text="${criteria}"> </li>
+            </ol>
+            
+         </div>
+       
+        <div class="d-grid">
+            <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Check Another Client Status</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
